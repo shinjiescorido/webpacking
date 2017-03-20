@@ -1,8 +1,9 @@
 var debug = process.env.NODE_ENV !== "production";
 var webpack = require('webpack');
+var path = require("path");
 
 module.exports = {
-  context: __dirname + "/src",
+  context: path.join(__dirname , "src"),
   devtool: debug ? "inline-sourcemap" : null,
   entry: "./js/client.js",
   module: {
@@ -21,6 +22,18 @@ module.exports = {
   output: {
     path: __dirname + "/src/",
     filename: "client.min.js"
+  },
+  devServer: {
+    hot: true,
+    contentBase: path.join(__dirname, 'src'),
+    publicPath: '/src',
+    port: 3000,
+    historyApiFallback: true,
+    stats: {
+        colors: true, // color is life
+        chunks: false, // this reduces the amount of stuff I see in my terminal; configure to your needs
+        'errors-only': true
+    }
   },
   plugins: debug ? [] : [
     new webpack.optimize.DedupePlugin(),
